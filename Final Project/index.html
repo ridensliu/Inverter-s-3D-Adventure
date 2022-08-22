@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="//cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="helper.js"></script>
+    <script src="first.js"></script>
+    <script src="shader.js"></script>
+    <script src="shader/datablock.js"></script>
+    <script>
+      AFRAME.registerComponent("event-listener", {
+        init: function() {
+          this.el.addEventListener("click", function(e) {
+            console.log(e.target);
+            // e.target.setAttribute('scale', {x: 2, y: 2, z: 2});
+            e, target, setAttribute("material", "shader", { grid });
+          });
+          this.el.addEventListener("mouseenter", function(e) {
+            console.log(e.target);
+            e.target.setAttribute("scale", { x: 1.5, y: 1.5, z: 1.5 });
+          });
+          this.el.addEventListener("mouseleave", function(e) {
+            console.log(e.target);
+            e.target.setAttribute("scale", { x: 1, y: 1, z: 1 });
+          });
+        }
+      });
+
+      AFRAME.registerComponent("school-playground", {
+        init: function() {
+          // Solution for Creating Entities.
+          var sceneEl = document.querySelector("a-scene");
+          
+          let container = document.createElement('a-entity');
+          sceneEl.appendChild(container);
+
+          for (var i = 0; i < 900; i++) {
+            var boxEl = document.createElement("a-box");
+            boxEl.setAttribute("material", {
+              color: `hsl(${120 + 120 * Math.random()}, 100%, 70%)`,
+              transparent: true,
+              opacity: 0.3,
+              shader: "displacement-offset"
+            });
+            // boxEl.setAttribute('color', getRandomColor());
+            boxEl.setAttribute("position", {
+              x: Math.random() * 40 - 5,
+              y: Math.random() * 20 - 10,
+              z: Math.random() * 50 - 10
+            });
+            boxEl.setAttribute("scale", {
+              x: Math.random() / 5,
+              y: Math.random() / 5,
+              z: Math.random() / 4
+            });
+            boxEl.setAttribute("animation__color", {
+              property: "color",
+              dir: "alternate",
+              dur: 2000,
+              easing: "easeInOutSine",
+              loop: true,
+              to: getRandomColor()
+            });
+            container.appendChild(boxEl);
+          }
+        }
+      });
+
+      function getRandomColor() {
+        var varters = "0123456789abcdef";
+        var randomColor = "";
+        for (var i = 0; i < 6; i++) {
+          randomColor += varters[Math.floor(Math.random() * 16)];
+        }
+        return "#" + randomColor;
+      }
+    </script>
+  </head>
+  <body>
+    <a-scene
+      scene-flow
+      school-playground
+    >
+<!--       <a-scene
+      scene-flow
+      school-playground
+      fog="type: exponential; density: 0.012;"
+      animation="property: fog.color; dur: 1000;
+                        from: #000000; to: #3f5f69;
+                        loop: true; dir: alternate"
+    > -->
+      <a-assets>
+        <!--         <img id="boxTexture" src="https://i.imgur.com/mYmmbrp.jpg"> -->
+<!--         <img
+          id="skyTexture"
+          src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/sechelt.jpg"
+        /> -->
+<!--         <img
+             id="sky-texture"
+             src="https://cdn.glitch.me/96a5a390-c410-4a88-821d-ae47f3d82b9c%2FStudio-Small.jpg?v=1638540649709"/> -->
+        <!--         <img id="groundTexture" src="https://cdn.aframe.io/a-painter/images/floor.jpg"> -->
+<!--                 <audio src="https://cdn.glitch.me/96a5a390-c410-4a88-821d-ae47f3d82b9c%2FSoft_and_Furious_-_07_-_C_L_I_M_A_X.mp3?v=1638511431729" autoplay
+      preload></audio> -->
+      </a-assets>
+      <a-sound
+        src="https://cdn.aframe.io/basic-guide/audio/backgroundnoise.wav"
+        autoplay="true"
+        loop="true"
+        volume="10"
+        position="0 2 -55"
+        animation__position="property:object3D.position.z; to:80; dir:alternate; dur:5000; loop:true"
+      ></a-sound>
+      <a-gltf-model
+        src="https://cdn.glitch.me/96a5a390-c410-4a88-821d-ae47f3d82b9c%2Fout.glb?v=1638470302904"
+        material="shader:displacement-offset"
+        myoffset-updater
+        scale="0.21 0.235 0.23"
+        position="-2.84 -12.2 -51.5"
+      ></a-gltf-model>
+
+<!--  World Divider  -->
+      <!--    Gate Of Chips    -->
+      <a-gltf-model
+        src="https://cdn.glitch.me/96a5a390-c410-4a88-821d-ae47f3d82b9c%2FGate%20Of%20Chips.glb?v=1638539110869"
+        animation-mixer="clip: CircleAction;"
+        scale="1.5 1.5 1.5"
+        position="0 1.6 -3.8"
+        gltf-env
+      ></a-gltf-model>
+      <!--    Wall Of Chips    -->
+      <a-gltf-model
+        src="https://cdn.glitch.me/96a5a390-c410-4a88-821d-ae47f3d82b9c%2FGate%20Wall.glb?v=1638543930303"
+        scale="1.5 1.5 1.5"
+        position="0 1.6 -4"
+      ></a-gltf-model>
+      
+<!--    Player Props    -->
+      <!--    Room Wall    -->
+      <a-gltf-model
+        src="https://cdn.glitch.me/96a5a390-c410-4a88-821d-ae47f3d82b9c%2FRoom%20Wall.glb?v=1638546793054"
+        scale="1.5 1.5 1.5"
+        position="0 1.6 -4.001"
+        rotation="0 0 0"
+      ></a-gltf-model>
+      <!--    TV    -->
+      <a-gltf-model
+        src="https://cdn.glitch.me/96a5a390-c410-4a88-821d-ae47f3d82b9c%2FTV.glb?v=1638545392706"
+        scale="1.5 1.5 1.5"
+        position="-7.812 -4.212 -32.26"
+        rotation="0 35.766 0"
+      ></a-gltf-model>
+      <!--    Shelf    -->
+      <a-gltf-model
+        src="https://cdn.glitch.me/96a5a390-c410-4a88-821d-ae47f3d82b9c%2FShelf.glb?v=1638550761032"
+        scale="1.5 1.5 1.5"
+        position="7.812 -4.212 -32.26"
+        rotation="0 -35.766 0"
+      ></a-gltf-model>
+      
+      <a-entity light="type: ambient; color: #9b96f9; intensity: 2;"></a-entity>
+      <a-entity light="type: directional; color: #9b96f9; intensity: 1.2;" position="-1 1 0"></a-entity>
+      <a-entity light="type: directional; color: #9b96f9; intensity: 5;" position="1 0.3 -1"></a-entity>
+
+      <!--       <a-sky color="#fff" src = "#skyTexture"></a-sky> -->
+      <a-sky color="#000"></a-sky>
+      <a-plane
+        color="#000"
+        width="3.5"
+        height="3.3"
+        position="0 2 -55"
+      ></a-plane>
+      <!--       <a-box color = red weight=1 height=1 position = '3 4 -15'
+                material="shader:displacement-offset"
+                myoffset-updater
+                ></a-box> -->
+      <!--       <a-entity movement-controls="fly: true" position="0 0 0"> -->
+      <!--       <a-entity camera position="0 1.6 0" look-controls></a-entity> -->
+      <a-entity cursor="rayOrigin:mouse"></a-entity>
+      <a-entity laser-controls="hand: right"></a-entity>
+    </a-scene>
+  </body>
+</html>
